@@ -1,0 +1,180 @@
+/* Add these styles */
+
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Changed background color */
+  }
+  
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center; /* Center-align the content */
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  nav ul li a:hover {
+    color: #ffd700;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  /* Hero section */
+  .hero {
+    text-align: center;
+    padding: 100px 0; /* Increased padding for better spacing */
+    background-color: #007bff; /* Changed background color */
+    color: #fff;
+  }
+  
+  .hero h1 {
+    font-size: 3em; /* Increased font size for the main heading */
+  }
+  
+  .hero p {
+    font-size: 1.2em; /* Increased font size for the paragraph */
+  }
+  
+  .cta-button {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px; /* Increased padding for the button */
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .cta-button:hover {
+    background-color: #0056b3; /* Changed button hover color */
+  }
+  
+  /* Product section */
+  .products {
+    margin-top: 50px;
+    text-align: center; /* Center-align the content */
+  }
+  
+  .products h1 {
+    margin-bottom: 50px; /* Increased margin for better spacing */
+  }
+  
+  .product-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .product-item {
+    width: 300px;
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-item img {
+    width: 100%;
+    border-radius: 5px;
+  }
+  
+  .product-item h2 {
+    margin-top: 10px;
+    color: #333;
+  }
+  
+  .product-item p {
+    color: #777;
+  }
+  
+  .add-to-cart {
+    background-color: #007bff; /* Changed button color */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-to-cart:hover {
+    background-color: #0056b3; /* Changed button hover color */
+  }
+  
+  /* Add these styles */
+
+/* Parallax effect for hero section background */
+/* Parallax effect for hero section background */
+.hero {
+    text-align: center;
+    padding: 100px 0;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('your-hero-background-image.jpg'); /* Replace with your actual image */
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Hover effect for buttons */
+  .cta-button,
+  .add-to-cart {
+    display: inline-block;
+    background-color: #ff6347; /* Coral */
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .cta-button:hover,
+  .add-to-cart:hover {
+    background-color: #e74c3c; /* Alizarin */
+  }
+  
+  /* Hover effect for product images */
+  .product-item img {
+    width: 100%;
+    border-radius: 5px;
+    transition: transform 0.3s;
+  }
+  
+  .product-item img:hover {
+    transform: scale(1.05); /* Scale up the image on hover */
+  }
