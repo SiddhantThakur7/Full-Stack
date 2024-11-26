@@ -24,10 +24,10 @@ Follow these steps to unpack and load the extension in your browser:
 - Any updates to the extension will require reloading it via the browser's developer tools.
 
 ## Features
-- [List key features of your extension here.]
+- TBD
 
 ## License
-[Include license information if applicable.]
+- TBD
 
 
 
