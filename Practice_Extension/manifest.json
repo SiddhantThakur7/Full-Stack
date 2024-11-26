@@ -1,0 +1,11 @@
+{
+    "name": "Capstone Project",
+    "version": "1.0.0",
+    "description": "This is a test chrome extension",
+    "manifest_version": 3,
+    "author": "Prathamesh",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Capstone Project"
+    }
+}
