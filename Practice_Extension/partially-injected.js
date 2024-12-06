@@ -3,13 +3,6 @@ port.postMessage({ message: "Connection Established!" });
 port.onMessage.addListener(function (msg) {
     console.log(msg);
     window.postMessage("play/pause");
+    console.log("partially-injected: Message Posted")
 });
-
-window.addEventListener(
-    "message",
-    (event) => {
-        console.log("partially-injected", event);
-    },
-    false
-);
 

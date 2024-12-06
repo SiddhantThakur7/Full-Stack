@@ -1,7 +1,7 @@
 var videoPlayer = null;
 var player = null;
 var editorExtensionId = "pcmngjiogdapgmdbcfegloonelminlpp";
-var port = chrome.runtime.connect(editorExtensionId, { name: "webpage" });
+var port = chrome.runtime.connect(editorExtensionId, { name: "webpage-netflix" });
 
 window.addEventListener("load", async () => {
   videoPlayer = window.netflix.appContext.state.playerApp.getAPI().videoPlayer;
@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
     videoPlayer.getAllPlayerSessionIds(),
     player
   );
-  port.postMessage({message: "Connection Established!", status: player.isPaused() });
+  port.postMessage({ message: "Connection Established!", status: player.isPaused() });
   // window.postMessage("message");
   window.addEventListener(
     "message",
@@ -55,8 +55,8 @@ function sleep(ms) {
 
 async function throttledCheck(callback) {
   for (let i = 0; i < 5; i++) {
-      if (callback()) return;
-      await sleep(i * 500);
+    if (callback()) return;
+    await sleep(i * 500);
   }
   console.log('Done');
 }
