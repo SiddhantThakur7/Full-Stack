@@ -2,6 +2,7 @@ var tabId = null;
 var contentScriptConnection = null;
 var webpageConnection = null;
 var statusDisplay = null;
+var connectionForm = null;
 var answer = null;
 var channel = null;
 
@@ -31,6 +32,7 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+  connectionForm = document.getElementById("connection-form");
   const button = document.getElementById("testButton");
   statusDisplay = document.getElementById("status")
   if (button) {
@@ -93,6 +95,7 @@ function makeDataChannel() {
   channel = pc.createDataChannel('test', { reliable: true });
   channel.onopen = function () {
     console.log("Channel Created!");
+    connectionForm.style.display = 'none';
   };
   channel.onmessage = function (evt) {
     data = JSON.parse(evt.data);
@@ -104,7 +107,8 @@ function makeDataChannel() {
 function handleDataChannel() {
   pc.ondatachannel = function (evt) {
     channel = evt.channel;
-    console.log('Channel found: ', channel);
+    console.log('Channel found: ', channel, connectionForm);
+    connectionForm.style.display = 'none';
     // var label = channel.label;
     //channel.binaryType = 'arraybuffer';
     channel.onopen = function () {
