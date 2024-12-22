@@ -25,7 +25,8 @@
         "https://www.netflix.com/*"
       ],
       "js": [
-        "injected-netflix.js"
+        "injected-netflix.js",
+        "NetflixPlayer.js"
       ],
       "run_at": "document_end",
       "all_frames": true,
@@ -36,7 +37,8 @@
         "https://www.youtube.com/*"
       ],
       "js": [
-        "injected-youtube.js"
+        "injected-youtube.js",
+        "YouTubePlayer.js"
       ],
       "run_at": "document_end",
       "all_frames": true,
