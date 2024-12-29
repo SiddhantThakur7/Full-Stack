@@ -5,6 +5,7 @@ var statusDisplay = null;
 var connectionForm = null;
 var answer = null;
 var channel = null;
+var isActor = true;
 
 const servers = {
   iceServers: [
@@ -26,8 +27,11 @@ chrome.runtime.onConnect.addListener(function (port) {
 chrome.runtime.onConnectExternal.addListener(function (port) {
   webpageConnection = port
   port.onMessage.addListener(function (msg) {
-    console.log('Webpage: ', msg);
+    console.log('Webpage: ', msg, isActor, channel);
     statusDisplay.innerHTML = `Status: ${msg.status ? "Paused" : "Playing"}`
+    if (channel && isActor)
+      channel.send(JSON.stringify({ message: "Status Changed" }))
+    isActor = true;
   });
 });
 
@@ -45,7 +49,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   document.getElementById('create-offer-button').addEventListener('click', createOffer);
-  document.getElementById('respond-offer-button').addEventListener('click', respondToOffer);
+  document.getElementById('respond-offer-button-1').addEventListener('click', respondToOffer);
+  document.getElementById('respond-offer-button-2').addEventListener('click', respondToOffer2);
 });
 
 
@@ -70,7 +75,28 @@ async function respondToOffer() {
   if (!pc) {
     pc = new RTCPeerConnection(servers);
   }
-  data = JSON.parse(document.getElementById('remote-description').value);
+  data = JSON.parse(document.getElementById('remote-description-1').value);
+  sessionDescription = new RTCSessionDescription(data);
+  handleDataChannel();
+  pc.setRemoteDescription(sessionDescription);
+  if (pc.localDescription) {
+    return
+  }
+  const answerDescription = await pc.createAnswer();
+  await pc.setLocalDescription(answerDescription);
+  pc.onicecandidate = function (candidate) {
+    if (candidate.candidate == null) {
+      console.log("answer: ", JSON.stringify(pc.localDescription));
+      document.getElementById('local-description').value = JSON.stringify(pc.localDescription)
+    }
+  }
+}
+
+async function respondToOffer2() {
+  if (!pc) {
+    pc = new RTCPeerConnection(servers);
+  }
+  data = JSON.parse(document.getElementById('remote-description-2').value);
   sessionDescription = new RTCSessionDescription(data);
   handleDataChannel();
   pc.setRemoteDescription(sessionDescription);
@@ -100,6 +126,9 @@ function makeDataChannel() {
   channel.onmessage = function (evt) {
     data = JSON.parse(evt.data);
     console.log('Message recieved: ', data);
+    if (data.message == "Changed Status")
+      contentScriptConnection.postMessage("play/pause");
+    isActor = false;
   };
   channel.onerror = (error) => console.log(error);
 }
@@ -109,14 +138,16 @@ function handleDataChannel() {
     channel = evt.channel;
     console.log('Channel found: ', channel, connectionForm);
     connectionForm.style.display = 'none';
-    // var label = channel.label;
-    //channel.binaryType = 'arraybuffer';
     channel.onopen = function () {
       console.log('Channel found: ', channel);
     };
     channel.onmessage = function (evt) {
+      isActor = false;
       data = JSON.parse(evt.data);
-      console.log('Message recieved: ', data);
+      console.log('Message recieved: ', data, contentScriptConnection);
+      if (data.message == "Status Changed")
+        contentScriptConnection.postMessage("play/pause");
+      isActor = false;
     };
     channel.onerror = (error) => console.log(error);
   };

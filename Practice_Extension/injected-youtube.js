@@ -4,17 +4,21 @@ var editorExtensionId = "pcmngjiogdapgmdbcfegloonelminlpp";
 var port = chrome.runtime.connect(editorExtensionId, { name: "webpage-youtube" });
 
 window.addEventListener("load", async () => {
-    player = document.querySelector("video");
-    await throttledCheck(() => {
-        return player?.isConnected ? true : false
+    player = new YouTubePlayer();
+    await player.instantiate()
+    console.log('hiiiii', player, player.currentPlayState());
+
+    player.setplayingStateChangeAction((e) => {
+        console.log(player.currentPlayState() ? "Played" : "Paused", e);
+        port.postMessage({ message: "Status Changed", status: !player.currentPlayState() });
     })
-    console.log(player, player.currentTime);
-    port.postMessage({ message: "Connection Established!", status: player.paused });
+    player.setplayingStateChangeListener()
+    port.postMessage({ message: "Connection Established!", status: !player.currentPlayState() });
     window.addEventListener(
         "message",
         (event) => {
-            console.log("injected", event, player, player.paused);
-            if (!player.paused) {
+            console.log("injected", event, player, !player.currentPlayState());
+            if (player.currentPlayState()) {
                 player.pause();
             } else {
                 player.play();
@@ -22,26 +26,4 @@ window.addEventListener("load", async () => {
         },
         false
     );
-
-    player.onpause = (e) => {
-        console.log(player.paused, "Paused", e);
-        port.postMessage({ message: "Status Changed", status: player.paused });
-    }
-
-    player.onplay = (e) => {
-        console.log(player.paused, "Played", e);
-        port.postMessage({ message: "Status Changed", status: player.paused });
-    }
 });
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function throttledCheck(callback) {
-    for (let i = 0; i < 5; i++) {
-        if (callback()) return;
-        await sleep(i * 500);
-    }
-    console.log('Done');
-}
