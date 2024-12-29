@@ -1,7 +1,5 @@
 // YouTubePlayer.js
 class Player {
-    #playingStateChangeAction = () => pass;
-    #seekAction = () => pass;
     #player;
 
     constructor() {
@@ -15,14 +13,6 @@ class Player {
 
     instantiate = async () => {
         await this.#player.instantiate();
-    }
-
-    setplayingStateChangeAction = (action) => {
-        this.#playingStateChangeAction = action;
-    }
-
-    setseekAction = (action) => {
-        this.#seekAction = action;
     }
 
     setplayingStateChangeListener = (action) => {
