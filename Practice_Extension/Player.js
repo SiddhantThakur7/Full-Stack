@@ -1,11 +1,10 @@
-// YouTubePlayer.js
 class Player {
     #player;
 
     constructor() {
         if (window.location.origin.includes('youtube')) {
             this.#player = new YouTubePlayer();
-        } else if (window.location.origin.includes('youtube')) {
+        } else if (window.location.origin.includes('netflix')) {
             this.#player = new NetflixPlayer();
         }
     }
