@@ -28,7 +28,7 @@ class PeerConnectionEntity {
         await this.peerConnection.setRemoteDescription(sdp);
     }
 
-    Offer = (id, suffix) => {
+    Offer = async (id, suffix) => {
         this.channel.Create(id, suffix);
         const offerDescription = await this.peerConnection.createOffer();
         this.offer = offerDescription;
@@ -40,7 +40,10 @@ class PeerConnectionEntity {
         }
     }
 
-    Answer = (remoteSdp) => {
+    Answer = async (remoteSdp) => {
+        if (this.peerConnection.remoteDescription){
+            return
+        }
         const remoteDescription = new RTCSessionDescription(remoteSdp);
         this.channel.Discover();
         await SetRemoteDescription(remoteDescription);

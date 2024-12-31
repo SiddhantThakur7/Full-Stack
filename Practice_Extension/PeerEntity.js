@@ -1,7 +1,6 @@
 class PeerEntity {
     PEER_LIMIT = 4;
     #peerId = null;
-    peerConnection = null;
     connections = [];
     offers = [];
     answers = [];
@@ -11,8 +10,10 @@ class PeerEntity {
     instantiate = async () => {
         this.#peerId = Date.now(); //Todo: Change to random hash code
         if (window.location.origin.includes('app')){ //Todo: Change 'app' to domain name of the hosted app
-            this.AnswerSessionRequest(window.location.pathname.slice(1))
-        } 
+            await this.AnswerSessionRequest(window.location.pathname.slice(1))
+        } else {
+            await this.CreateSessionRequest();
+        }
     }
 
     InstantiateSession = async () => {
@@ -23,7 +24,7 @@ class PeerEntity {
     CreateSessionRequest = async () => {
         await this.InstantiateSession();
         for(let i = 0; i < PEER_LIMIT; i++){
-            this.CreateConnectionEntity(true);
+            await this.CreateConnectionRequest(true);
         }
         // await SignallingServer.Send({
         //     session: this.session,
@@ -37,24 +38,27 @@ class PeerEntity {
     AnswerSessionRequest = async (sessionId, offer) => {
         // let connectionAssets = await SignallingServer.Get(sessionId);
         this.session = new ExperienceSession(JSON.parse(connectionAssets).sessionId);
-        this.offers.push()
-        
+        let remoteSdp = connectionAssets.offer;
+        await this.CreateConnectionResponse(remoteSdp, true);
     }
 
-    CreateConnectionRequest = (isPrimary = false) => {
+    CreateConnectionRequest = async (isPrimary = false) => {
         let connectionEntity = new PeerConnectionEntity(isPrimary);
-        this.offers.push(connectionEntity.Offer(this.#peerId, this.offers.length));
-        connections.push(connectionEntity)
+        this.offers.push(await connectionEntity.Offer(this.#peerId, this.offers.length));
+        this.connections.push(connectionEntity)
     }
 
-    CreateConnectionResponse = (isPrimary = false) => {
+    CreateConnectionResponse = async (remoteSdp, isPrimary = false) => {
         let connectionEntity = new PeerConnectionEntity(isPrimary);
-        this.answers.push(connectionEntity.Offer(this.#peerId, this.offers.length));
-        connections.push(connectionEntity)
+        this.answers.push(await connectionEntity.Answer(remoteSdp));
+        this.connections.push(connectionEntity)
+    }
+
+    HandleConnectionResponse = async (remoteSdp, connectionIndex) => {
+        await this.connections[connectionIndex].Answer(remoteSdp);
     }
 
     discoverDataChannel = async() => {
         
     }
-
 }
