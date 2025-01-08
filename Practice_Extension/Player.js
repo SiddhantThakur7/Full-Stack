@@ -1,13 +1,10 @@
-// YouTubePlayer.js
 class Player {
-    #playingStateChangeAction = () => pass;
-    #seekAction = () => pass;
     #player;
 
     constructor() {
         if (window.location.origin.includes('youtube')) {
             this.#player = new YouTubePlayer();
-        } else if (window.location.origin.includes('youtube')) {
+        } else if (window.location.origin.includes('netflix')) {
             this.#player = new NetflixPlayer();
         }
     }
@@ -15,14 +12,6 @@ class Player {
 
     instantiate = async () => {
         await this.#player.instantiate();
-    }
-
-    setplayingStateChangeAction = (action) => {
-        this.#playingStateChangeAction = action;
-    }
-
-    setseekAction = (action) => {
-        this.#seekAction = action;
     }
 
     setplayingStateChangeListener = (action) => {
